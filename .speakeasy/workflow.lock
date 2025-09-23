@@ -1,0 +1,37 @@
+speakeasyVersion: 1.622.1
+sources:
+    Daydream API Documentation:
+        sourceNamespace: daydream-api-documentation
+        sourceRevisionDigest: sha256:0764a75118a136347cdb7d26fa72b4b3526ceb760ec91d107c711659a0c76714
+        sourceBlobDigest: sha256:20f6ed4390a734dc8906f2b7c04270fe71810861385827c7da814db53f9b2225
+        tags:
+            - latest
+            - 1.0.0
+targets:
+    daydream-test:
+        source: Daydream API Documentation
+        sourceNamespace: daydream-api-documentation
+        sourceRevisionDigest: sha256:0764a75118a136347cdb7d26fa72b4b3526ceb760ec91d107c711659a0c76714
+        sourceBlobDigest: sha256:20f6ed4390a734dc8906f2b7c04270fe71810861385827c7da814db53f9b2225
+        codeSamplesNamespace: daydream-api-documentation-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:18837e749aad4ead17656a135cacba191ea3411951c6561ce4320fc6fc984f9f
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Daydream API Documentation:
+            inputs:
+                - location: ../pipelines/apps/api/openapi/openapi.public.json
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation
+    targets:
+        daydream-test:
+            target: typescript
+            source: Daydream API Documentation
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

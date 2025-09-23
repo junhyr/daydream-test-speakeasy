@@ -1,0 +1,265 @@
+lockVersion: 2.0.0
+id: 4cd81233-abf6-4f87-ab23-5158bc699720
+management:
+  docChecksum: e5f844e629697b8b621eaa1be84ea19c
+  docVersion: 1.0.0
+  speakeasyVersion: 1.622.1
+  generationVersion: 2.709.0
+  releaseVersion: 0.0.3
+  configChecksum: e7b5672576c7ab015231fb9d34663a0f
+features:
+  typescript:
+    additionalDependencies: 0.1.0
+    additionalProperties: 0.1.1
+    core: 3.21.23
+    defaultEnabledRetries: 0.1.0
+    devContainers: 2.90.1
+    enumUnions: 0.1.0
+    envVarSecurityUsage: 0.1.2
+    globalSecurity: 2.82.14
+    globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
+    globalServerURLs: 2.82.5
+    methodArguments: 0.1.2
+    nullables: 0.1.1
+    responseFormat: 0.2.3
+    retries: 2.83.0
+    sdkHooks: 0.3.0
+    unions: 2.85.11
+generatedFiles:
+  - .devcontainer/README.md
+  - .devcontainer/devcontainer.json
+  - .devcontainer/setup.sh
+  - .gitattributes
+  - .npmignore
+  - FUNCTIONS.md
+  - RUNTIMES.md
+  - USAGE.md
+  - docs/lib/utils/retryconfig.md
+  - docs/models/errors/createstreambadrequesterror.md
+  - docs/models/errors/createstreaminternalservererror.md
+  - docs/models/errors/deletestreaminternalservererror.md
+  - docs/models/errors/deletestreamnotfounderror.md
+  - docs/models/errors/getallstreamsbadrequesterror.md
+  - docs/models/errors/getallstreamsinternalservererror.md
+  - docs/models/errors/getstreambyidbadrequesterror.md
+  - docs/models/errors/getstreambyidinternalservererror.md
+  - docs/models/errors/getstreambyidnotfounderror.md
+  - docs/models/errors/getstreamstatusbadrequesterror.md
+  - docs/models/errors/getstreamstatusinternalservererror.md
+  - docs/models/errors/getstreamstatusnotfounderror.md
+  - docs/models/errors/updatestreambadrequesterror.md
+  - docs/models/errors/updatestreaminternalservererror.md
+  - docs/models/errors/updatestreamnotfounderror.md
+  - docs/models/operations/connquality1.md
+  - docs/models/operations/connquality2.md
+  - docs/models/operations/createstreamcontrolnet.md
+  - docs/models/operations/createstreamcontrolnetmodelid.md
+  - docs/models/operations/createstreamipadapter.md
+  - docs/models/operations/createstreamloradict.md
+  - docs/models/operations/createstreammodelid.md
+  - docs/models/operations/createstreamprompt1.md
+  - docs/models/operations/createstreamprompt2.md
+  - docs/models/operations/createstreampromptinterpolationmethod.md
+  - docs/models/operations/createstreamrequest.md
+  - docs/models/operations/createstreamresponse.md
+  - docs/models/operations/createstreamseed1.md
+  - docs/models/operations/createstreamseed2.md
+  - docs/models/operations/createstreamseedinterpolationmethod.md
+  - docs/models/operations/createstreamtype.md
+  - docs/models/operations/createstreamweighttype.md
+  - docs/models/operations/data.md
+  - docs/models/operations/dataoffline.md
+  - docs/models/operations/deletestreamdata.md
+  - docs/models/operations/deletestreamrequest.md
+  - docs/models/operations/deletestreamresponse.md
+  - docs/models/operations/error1.md
+  - docs/models/operations/error2.md
+  - docs/models/operations/gatewaystatus1.md
+  - docs/models/operations/gatewaystatus2.md
+  - docs/models/operations/getallstreamsrequest.md
+  - docs/models/operations/getallstreamsresponse.md
+  - docs/models/operations/getstreambyidrequest.md
+  - docs/models/operations/getstreambyidresponse.md
+  - docs/models/operations/getstreamstatusdata1.md
+  - docs/models/operations/getstreamstatusdata2.md
+  - docs/models/operations/getstreamstatusrequest.md
+  - docs/models/operations/getstreamstatusresponse.md
+  - docs/models/operations/inferencestatus.md
+  - docs/models/operations/ingestmetrics1.md
+  - docs/models/operations/ingestmetrics2.md
+  - docs/models/operations/orchestratorinfo.md
+  - docs/models/operations/params.md
+  - docs/models/operations/peerconnstats1.md
+  - docs/models/operations/peerconnstats2.md
+  - docs/models/operations/pipelineid.md
+  - docs/models/operations/pipelineidenum.md
+  - docs/models/operations/pipelineparams.md
+  - docs/models/operations/state.md
+  - docs/models/operations/stats1.md
+  - docs/models/operations/stats2.md
+  - docs/models/operations/trackstat1.md
+  - docs/models/operations/trackstat2.md
+  - docs/models/operations/updatestreamcontrolnet.md
+  - docs/models/operations/updatestreamcontrolnetmodelid.md
+  - docs/models/operations/updatestreamipadapter.md
+  - docs/models/operations/updatestreamloradict.md
+  - docs/models/operations/updatestreammodelid.md
+  - docs/models/operations/updatestreamprompt1.md
+  - docs/models/operations/updatestreamprompt2.md
+  - docs/models/operations/updatestreampromptinterpolationmethod.md
+  - docs/models/operations/updatestreamrequest.md
+  - docs/models/operations/updatestreamrequestbody.md
+  - docs/models/operations/updatestreamresponse.md
+  - docs/models/operations/updatestreamseed1.md
+  - docs/models/operations/updatestreamseed2.md
+  - docs/models/operations/updatestreamseedinterpolationmethod.md
+  - docs/models/operations/updatestreamtype.md
+  - docs/models/operations/updatestreamweighttype.md
+  - docs/models/security.md
+  - docs/sdks/daydreamtest/README.md
+  - docs/sdks/public/README.md
+  - docs/sdks/streams/README.md
+  - eslint.config.mjs
+  - examples/.env.template
+  - examples/README.md
+  - examples/package.json
+  - examples/streamsCreateStream.example.ts
+  - jsr.json
+  - package.json
+  - src/core.ts
+  - src/funcs/streamsCreateStream.ts
+  - src/funcs/streamsDeleteStream.ts
+  - src/funcs/streamsGetAllStreams.ts
+  - src/funcs/streamsGetStreamById.ts
+  - src/funcs/streamsGetStreamStatus.ts
+  - src/funcs/streamsUpdateStream.ts
+  - src/hooks/hooks.ts
+  - src/hooks/index.ts
+  - src/hooks/types.ts
+  - src/index.ts
+  - src/lib/base64.ts
+  - src/lib/config.ts
+  - src/lib/dlv.ts
+  - src/lib/encodings.ts
+  - src/lib/env.ts
+  - src/lib/files.ts
+  - src/lib/http.ts
+  - src/lib/is-plain-object.ts
+  - src/lib/logger.ts
+  - src/lib/matchers.ts
+  - src/lib/primitives.ts
+  - src/lib/retries.ts
+  - src/lib/schemas.ts
+  - src/lib/sdks.ts
+  - src/lib/security.ts
+  - src/lib/url.ts
+  - src/models/errors/createstream.ts
+  - src/models/errors/daydreamtestdefaulterror.ts
+  - src/models/errors/daydreamtesterror.ts
+  - src/models/errors/deletestream.ts
+  - src/models/errors/getallstreams.ts
+  - src/models/errors/getstreambyid.ts
+  - src/models/errors/getstreamstatus.ts
+  - src/models/errors/httpclienterrors.ts
+  - src/models/errors/index.ts
+  - src/models/errors/responsevalidationerror.ts
+  - src/models/errors/sdkvalidationerror.ts
+  - src/models/errors/updatestream.ts
+  - src/models/index.ts
+  - src/models/operations/createstream.ts
+  - src/models/operations/deletestream.ts
+  - src/models/operations/getallstreams.ts
+  - src/models/operations/getstreambyid.ts
+  - src/models/operations/getstreamstatus.ts
+  - src/models/operations/index.ts
+  - src/models/operations/updatestream.ts
+  - src/models/security.ts
+  - src/sdk/index.ts
+  - src/sdk/public.ts
+  - src/sdk/sdk.ts
+  - src/sdk/streams.ts
+  - src/types/async.ts
+  - src/types/blobs.ts
+  - src/types/constdatetime.ts
+  - src/types/enums.ts
+  - src/types/fp.ts
+  - src/types/index.ts
+  - src/types/operations.ts
+  - src/types/rfcdate.ts
+  - src/types/streams.ts
+  - tsconfig.json
+examples:
+  createStream:
+    speakeasy-default-create-stream:
+      responses:
+        "201":
+          application/json: {"id": "<id>", "stream_key": "<value>", "output_stream_url": "https://magnificent-cellar.name/", "pipeline_params": {"key": "<value>", "key1": "<value>"}, "created_at": "1705882512462", "pipeline_id": "<id>", "output_playback_id": "<id>", "name": "<value>", "author": "<value>", "from_playground": true, "gateway_host": "<value>", "is_smoke_test": false, "whip_url": "https://impartial-aftermath.info"}
+        "400":
+          application/json: {"success": false, "error": "<value>"}
+        "500":
+          application/json: {"success": false, "error": "<value>"}
+  getAllStreams:
+    speakeasy-default-get-all-streams:
+      responses:
+        "200":
+          application/json: {"success": false, "data": ["<value 1>"]}
+        "400":
+          application/json: {"success": true, "error": "<value>"}
+        "500":
+          application/json: {"success": true, "error": "<value>"}
+  deleteStream:
+    speakeasy-default-delete-stream:
+      parameters:
+        query:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": false, "data": {}}
+        "404":
+          application/json: {"success": true, "error": "<value>"}
+        "500":
+          application/json: {"success": false, "error": "<value>"}
+  updateStream:
+    speakeasy-default-update-stream:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "stream_key": "<value>", "output_stream_url": "https://accurate-molasses.org", "pipeline_params": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "created_at": "1718514412467", "pipeline_id": "<id>", "output_playback_id": "<id>", "name": "<value>", "author": "<value>", "from_playground": false, "gateway_host": "<value>", "is_smoke_test": false, "whip_url": "https://inconsequential-bob.org/"}
+        "400":
+          application/json: {"success": true, "error": "<value>"}
+        "404":
+          application/json: {"success": true, "error": "<value>"}
+        "500":
+          application/json: {"success": true, "error": "<value>"}
+  getStreamById:
+    speakeasy-default-get-stream-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "stream_key": "<value>", "output_stream_url": "https://short-term-consistency.info/", "pipeline_params": {}, "created_at": "1714765388145", "pipeline_id": "<id>", "output_playback_id": "<id>", "name": "<value>", "author": "<value>", "from_playground": false, "gateway_host": "<value>", "is_smoke_test": true, "whip_url": "https://impish-comparison.org/"}
+        "400":
+          application/json: {"success": true, "error": "<value>"}
+        "404":
+          application/json: {"success": false, "error": "<value>"}
+        "500":
+          application/json: {"success": false, "error": "<value>"}
+  getStreamStatus:
+    speakeasy-default-get-stream-status:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": true}
+        "400":
+          application/json: {"success": false, "error": "<value>"}
+        "404":
+          application/json: {"success": true, "error": "<value>"}
+        "500":
+          application/json: {"success": true, "error": "<value>"}
+examplesVersion: 1.0.2

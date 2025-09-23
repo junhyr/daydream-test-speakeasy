@@ -1,0 +1,1333 @@
+openapi: "3.1.0"
+info:
+  title: "Daydream API Documentation"
+  description: "API documentation for Daydream API"
+  version: "1.0.0"
+components:
+  securitySchemes:
+    "Bearer":
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+paths:
+  "/v1/streams":
+    post:
+      operationId: "createStream"
+      summary: "Create a new stream"
+      tags:
+        - "Streams"
+        - "public"
+      description: "Creates a new video processing stream with the specified configuration"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: "object"
+              properties:
+                "pipeline_id":
+                  description: "ID of the processing pipeline to use for this stream"
+                  default: "pip_SD-turbo"
+                  anyOf:
+                    - type: "string"
+                      enum:
+                        - "pip_SD-turbo"
+                        - "pip_SDXL-turbo"
+                        - "pip_SD15"
+                        - "pip_SDXL-turbo-faceid"
+                "pipeline_params":
+                  description: "Configuration parameters for the selected pipeline"
+                  type: "object"
+                  properties:
+                    "model_id":
+                      description: "Base U-Net model to use for generation. Default: \"stabilityai/sd-turbo\""
+                      type: "string"
+                      enum:
+                        - "stabilityai/sd-turbo"
+                        - "prompthero/openjourney-v4"
+                        - "Lykon/dreamshaper-8"
+                        - "stabilityai/sdxl-turbo"
+                    "prompt":
+                      description: "Text prompt describing the desired image. Can be a single string or weighted list of (prompt, weight) tuples."
+                      anyOf:
+                        - type: "string"
+                        - type: "array"
+                          items:
+                            type: "array"
+                            prefixItems:
+                              - type: "string"
+                                minLength: 1
+                              - type: "number"
+                    "prompt_interpolation_method":
+                      description: "Method for interpolating between multiple prompts. Slerp provides smoother transitions than linear."
+                      type: "string"
+                      enum:
+                        - "linear"
+                        - "slerp"
+                    "normalize_prompt_weights":
+                      description: "Whether to normalize prompt weights to sum to 1.0 for consistent generation."
+                      type: "boolean"
+                    "normalize_seed_weights":
+                      description: "Whether to normalize seed weights to sum to 1.0 for consistent generation."
+                      type: "boolean"
+                    "negative_prompt":
+                      description: "Text describing what to avoid in the generated image."
+                      type: "string"
+                    "guidance_scale":
+                      description: "Strength of prompt adherence. Higher values make the model follow the prompt more strictly."
+                      type: "number"
+                    "delta":
+                      description: "Delta sets per-frame denoising progress: lower delta means steadier, less flicker but slower/softer; higher delta means faster, sharper but more flicker/artifacts (often reduce CFG)."
+                      type: "number"
+                    "num_inference_steps":
+                      description: "Builds the full denoising schedule (the 'grid' of possible refinement steps). Changing it changes what each step number (t_index_list value) means. Keep it fixed for a session and only adjust if you're deliberately redefining the schedule; if you do, proportionally remap your t_index_list. Typical range 10–200 with default being 50."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "t_index_list":
+                      description: "The ordered list of step indices from the num_inference_steps schedule to execute per frame. Each index is one model pass, so latency scales with the list length. Higher indices (e.g., 40–49 on a 50-step grid) mainly polish and preserve structure (lower flicker), while lower indices (<20) rewrite structure (more flicker, creative). Values must be non-decreasing, and each between 0 and num_inference_steps.\n\n⚠️ NOTE: t_index_list must have 1–4 elements, non-decreasing, and within [0, num_inference_steps]."
+                      type: "array"
+                      items:
+                        type: "integer"
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                    "use_safety_checker":
+                      description: "Whether to use safety checker for content filtering"
+                      type: "boolean"
+                    "width":
+                      description: "Output image width in pixels. Must be divisible by 64 and between 384-1024."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "height":
+                      description: "Output image height in pixels. Must be divisible by 64 and between 384-1024."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "lora_dict":
+                      description: "Dictionary mapping LoRA model paths to their weights for fine-tuning the base model."
+                      type: "object"
+                      nullable: true
+                    "use_lcm_lora":
+                      description: "Whether to use Latent Consistency Model LoRA for faster inference."
+                      type: "boolean"
+                    "lcm_lora_id":
+                      description: "Identifier for the LCM LoRA model to use. Example: \"latent-consistency/lcm-lora-sdv1-5\""
+                      type: "string"
+                    "acceleration":
+                      description: "Acceleration method for inference. Options: \"none\", \"xformers\", \"tensorrt\". TensorRT provides the best performance but requires engine compilation."
+                      type: "string"
+                    "use_denoising_batch":
+                      description: "Whether to process multiple denoising steps in a single batch for efficiency."
+                      type: "boolean"
+                    "do_add_noise":
+                      description: "Whether to add noise to input frames before processing. Enabling this slightly re-noises each frame to improve temporal stability, reduce ghosting/texture sticking, and prevent drift; disabling can yield sharper, lower-latency results but may increase flicker and artifact accumulation over time."
+                      type: "boolean"
+                    "seed":
+                      description: "Random seed for generation. Can be a single integer or weighted list of (seed, weight) tuples."
+                      anyOf:
+                        - type: "integer"
+                          minimum: -9007199254740991
+                          maximum: 9007199254740991
+                        - type: "array"
+                          items:
+                            type: "array"
+                            prefixItems:
+                              - type: "integer"
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                              - type: "number"
+                    "seed_interpolation_method":
+                      description: "Method for interpolating between multiple seeds. Slerp provides smoother transitions than linear."
+                      type: "string"
+                      enum:
+                        - "linear"
+                        - "slerp"
+                    "enable_similar_image_filter":
+                      description: "Whether to skip frames that are too similar to the previous output to reduce flicker."
+                      type: "boolean"
+                    "similar_image_filter_threshold":
+                      description: "Similarity threshold for the image filter. Higher values allow more variation between frames."
+                      type: "number"
+                    "similar_image_filter_max_skip_frame":
+                      description: "Maximum number of consecutive frames that can be skipped by the similarity filter."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "controlnets":
+                      description: "List of ControlNet configurations for guided generation. Each ControlNet provides different types of conditioning (pose, edges, depth, etc.). Dynamic updates limited to conditioning_scale changes only; cannot add new ControlNets or change model_id/preprocessor/params without reload."
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          "model_id":
+                            description: "⚠️ NOTE: ControlNet model_ids must be unique. Additionally, they must be compatible with the selected base model."
+                            type: "string"
+                            enum:
+                              - "thibaud/controlnet-sd21-openpose-diffusers"
+                              - "thibaud/controlnet-sd21-hed-diffusers"
+                              - "thibaud/controlnet-sd21-canny-diffusers"
+                              - "thibaud/controlnet-sd21-depth-diffusers"
+                              - "thibaud/controlnet-sd21-color-diffusers"
+                              - "lllyasviel/control_v11f1p_sd15_depth"
+                              - "lllyasviel/control_v11f1e_sd15_tile"
+                              - "lllyasviel/control_v11p_sd15_canny"
+                              - "xinsir/controlnet-depth-sdxl-1.0"
+                              - "xinsir/controlnet-canny-sdxl-1.0"
+                              - "xinsir/controlnet-tile-sdxl-1.0"
+                          "conditioning_scale":
+                            description: "Strength of the ControlNet's influence on generation. Higher values make the model follow the control signal more strictly. Typical range 0.0-1.0, where 0.0 disables the control and 1.0 applies full control. Default: 1.0"
+                            type: "number"
+                          "preprocessor":
+                            description: "Preprocessor to apply to input frames before feeding to the ControlNet. Common options include 'pose_tensorrt', 'soft_edge', 'canny', 'depth_tensorrt', 'passthrough'. If None, no preprocessing is applied.\n\n⚠️ NOTE: ControlNet preprocessor must be in the available list (AVAILABLE_PREPROCESSORS)."
+                            type: "string"
+                          "preprocessor_params":
+                            description: "Additional parameters for the preprocessor. For example, canny edge detection uses 'low_threshold' and 'high_threshold' values."
+                            type: "object"
+                            additionalProperties: {}
+                          "enabled":
+                            description: "Whether this ControlNet is active. Disabled ControlNets are not loaded. Default: true"
+                            type: "boolean"
+                          "control_guidance_start":
+                            description: "Fraction of the denoising process (0.0-1.0) when ControlNet guidance begins. 0.0 means guidance starts from the beginning."
+                            type: "number"
+                          "control_guidance_end":
+                            description: "Fraction of the denoising process (0.0-1.0) when ControlNet guidance ends. 1.0 means guidance continues until the end."
+                            type: "number"
+                        required:
+                          - "model_id"
+                          - "conditioning_scale"
+                          - "preprocessor"
+                          - "enabled"
+                    "ip_adapter":
+                      description: "IP adapter — Turns on IP-Adapter style conditioning and is fully hot-swappable. Available for SDXL, SDXL-faceid, SD1.5"
+                      type: "object"
+                      properties:
+                        "scale":
+                          type: "number"
+                        "enabled":
+                          type: "boolean"
+                        "type":
+                          description: "Type of IP adapter. Use 'faceid' for SDXL-faceid models, 'regular' for others"
+                          type: "string"
+                          enum:
+                            - "regular"
+                            - "faceid"
+                        "weight_type":
+                          description: "Weight interpolation method for IP adapter style conditioning. Controls how the style influence changes throughout the generation process."
+                          type: "string"
+                          enum:
+                            - "linear"
+                            - "ease in"
+                            - "ease out"
+                            - "ease in-out"
+                            - "reverse in-out"
+                            - "weak input"
+                            - "weak output"
+                            - "weak middle"
+                            - "strong middle"
+                            - "style transfer"
+                            - "composition"
+                            - "strong style transfer"
+                            - "style and composition"
+                            - "style transfer precise"
+                            - "composition precise"
+                      required:
+                        - "scale"
+                        - "enabled"
+                    "ip_adapter_style_image_url":
+                      description: "HTTPS URL of the style image to use. When set, the runtime downloads the image and configures the pipeline; if omitted, a default style image is used. For 'faceid' type, the image must contain a clear face. Available for SDXL, SDXL-faceid, SD1.5"
+                      type: "string"
+                "name":
+                  description: "Human-readable name for the stream"
+                  type: "string"
+                "output_rtmp_url":
+                  description: "Custom RTMP URL for stream output destination"
+                  type: "string"
+      security:
+        - Bearer: []
+      responses:
+        "201":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "id":
+                    description: "Unique identifier for the stream"
+                    type: "string"
+                  "stream_key":
+                    description: "Unique key used for streaming to this endpoint"
+                    type: "string"
+                  "output_stream_url":
+                    description: "URL where the processed stream output can be accessed"
+                    type: "string"
+                  "pipeline_params":
+                    description: "Current configuration parameters for the stream pipeline"
+                    type: "object"
+                    additionalProperties: {}
+                  "created_at":
+                    description: "ISO timestamp when the stream was created"
+                    type: "string"
+                  "pipeline_id":
+                    description: "ID of the processing pipeline being used"
+                    type: "string"
+                  "output_playback_id":
+                    description: "Playback ID for accessing the stream output"
+                    type: "string"
+                  "name":
+                    description: "Human-readable name of the stream"
+                    type: "string"
+                  "author":
+                    description: "ID of the user who created this stream"
+                    type: "string"
+                  "from_playground":
+                    description: "Whether this stream was created from the playground interface"
+                    type: "boolean"
+                  "gateway_host":
+                    description: "Gateway server hostname handling this stream"
+                    type: "string"
+                  "is_smoke_test":
+                    description: "Whether this is a smoke test stream"
+                    type: "boolean"
+                  "whip_url":
+                    description: "WebRTC WHIP URL for stream ingestion"
+                    type: "string"
+                required:
+                  - "id"
+                  - "stream_key"
+                  - "output_stream_url"
+                  - "pipeline_params"
+                  - "created_at"
+                  - "pipeline_id"
+                  - "output_playback_id"
+                  - "name"
+                  - "author"
+                  - "from_playground"
+                  - "gateway_host"
+                  - "is_smoke_test"
+                  - "whip_url"
+                additionalProperties: false
+        "400":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "500":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+    get:
+      operationId: "getAllStreams"
+      summary: "Get all streams for user"
+      tags:
+        - "Streams"
+        - "public"
+      description: "Retrieves all streams belonging to the authenticated user"
+      parameters:
+        - schema:
+            type: "string"
+          in: "query"
+          name: "user_id"
+          required: false
+          description: "Filter streams by the ID of the user who owns them"
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Whether the request was successful"
+                    type: "boolean"
+                  "data":
+                    description: "Array of stream objects"
+                    type: "array"
+                    items: {}
+                required:
+                  - "success"
+                  - "data"
+                additionalProperties: false
+        "400":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "500":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+    delete:
+      operationId: "deleteStream"
+      summary: "Delete a stream"
+      tags:
+        - "Streams"
+        - "public"
+      description: "Deletes a specific stream by ID for the authenticated user"
+      parameters:
+        - schema:
+            type: "string"
+            minLength: 1
+          in: "query"
+          name: "id"
+          required: true
+          description: "ID of the stream to delete"
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Whether the stream deletion was successful"
+                    type: "boolean"
+                  "data":
+                    description: "Empty object confirming successful deletion"
+                    type: "object"
+                    additionalProperties: false
+                required:
+                  - "success"
+                  - "data"
+                additionalProperties: false
+        "404":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "500":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+  "/v1/streams/{id}":
+    patch:
+      operationId: "updateStream"
+      summary: "Update a stream"
+      tags:
+        - "Streams"
+        - "public"
+      description: "Updates pipeline parameters for a specific stream by ID for the authenticated user"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: "object"
+              properties:
+                "params":
+                  description: "Updated pipeline parameters for the stream"
+                  type: "object"
+                  properties:
+                    "model_id":
+                      description: "Base U-Net model to use for generation. Default: \"stabilityai/sd-turbo\""
+                      type: "string"
+                      enum:
+                        - "stabilityai/sd-turbo"
+                        - "prompthero/openjourney-v4"
+                        - "Lykon/dreamshaper-8"
+                        - "stabilityai/sdxl-turbo"
+                    "prompt":
+                      description: "Text prompt describing the desired image. Can be a single string or weighted list of (prompt, weight) tuples."
+                      anyOf:
+                        - type: "string"
+                        - type: "array"
+                          items:
+                            type: "array"
+                            prefixItems:
+                              - type: "string"
+                                minLength: 1
+                              - type: "number"
+                    "prompt_interpolation_method":
+                      description: "Method for interpolating between multiple prompts. Slerp provides smoother transitions than linear."
+                      type: "string"
+                      enum:
+                        - "linear"
+                        - "slerp"
+                    "normalize_prompt_weights":
+                      description: "Whether to normalize prompt weights to sum to 1.0 for consistent generation."
+                      type: "boolean"
+                    "normalize_seed_weights":
+                      description: "Whether to normalize seed weights to sum to 1.0 for consistent generation."
+                      type: "boolean"
+                    "negative_prompt":
+                      description: "Text describing what to avoid in the generated image."
+                      type: "string"
+                    "guidance_scale":
+                      description: "Strength of prompt adherence. Higher values make the model follow the prompt more strictly."
+                      type: "number"
+                    "delta":
+                      description: "Delta sets per-frame denoising progress: lower delta means steadier, less flicker but slower/softer; higher delta means faster, sharper but more flicker/artifacts (often reduce CFG)."
+                      type: "number"
+                    "num_inference_steps":
+                      description: "Builds the full denoising schedule (the 'grid' of possible refinement steps). Changing it changes what each step number (t_index_list value) means. Keep it fixed for a session and only adjust if you're deliberately redefining the schedule; if you do, proportionally remap your t_index_list. Typical range 10–200 with default being 50."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "t_index_list":
+                      description: "The ordered list of step indices from the num_inference_steps schedule to execute per frame. Each index is one model pass, so latency scales with the list length. Higher indices (e.g., 40–49 on a 50-step grid) mainly polish and preserve structure (lower flicker), while lower indices (<20) rewrite structure (more flicker, creative). Values must be non-decreasing, and each between 0 and num_inference_steps.\n\n⚠️ NOTE: t_index_list must have 1–4 elements, non-decreasing, and within [0, num_inference_steps]."
+                      type: "array"
+                      items:
+                        type: "integer"
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                    "use_safety_checker":
+                      description: "Whether to use safety checker for content filtering"
+                      type: "boolean"
+                    "width":
+                      description: "Output image width in pixels. Must be divisible by 64 and between 384-1024."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "height":
+                      description: "Output image height in pixels. Must be divisible by 64 and between 384-1024."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "lora_dict":
+                      description: "Dictionary mapping LoRA model paths to their weights for fine-tuning the base model."
+                      type: "object"
+                      nullable: true
+                    "use_lcm_lora":
+                      description: "Whether to use Latent Consistency Model LoRA for faster inference."
+                      type: "boolean"
+                    "lcm_lora_id":
+                      description: "Identifier for the LCM LoRA model to use. Example: \"latent-consistency/lcm-lora-sdv1-5\""
+                      type: "string"
+                    "acceleration":
+                      description: "Acceleration method for inference. Options: \"none\", \"xformers\", \"tensorrt\". TensorRT provides the best performance but requires engine compilation."
+                      type: "string"
+                    "use_denoising_batch":
+                      description: "Whether to process multiple denoising steps in a single batch for efficiency."
+                      type: "boolean"
+                    "do_add_noise":
+                      description: "Whether to add noise to input frames before processing. Enabling this slightly re-noises each frame to improve temporal stability, reduce ghosting/texture sticking, and prevent drift; disabling can yield sharper, lower-latency results but may increase flicker and artifact accumulation over time."
+                      type: "boolean"
+                    "seed":
+                      description: "Random seed for generation. Can be a single integer or weighted list of (seed, weight) tuples."
+                      anyOf:
+                        - type: "integer"
+                          minimum: -9007199254740991
+                          maximum: 9007199254740991
+                        - type: "array"
+                          items:
+                            type: "array"
+                            prefixItems:
+                              - type: "integer"
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                              - type: "number"
+                    "seed_interpolation_method":
+                      description: "Method for interpolating between multiple seeds. Slerp provides smoother transitions than linear."
+                      type: "string"
+                      enum:
+                        - "linear"
+                        - "slerp"
+                    "enable_similar_image_filter":
+                      description: "Whether to skip frames that are too similar to the previous output to reduce flicker."
+                      type: "boolean"
+                    "similar_image_filter_threshold":
+                      description: "Similarity threshold for the image filter. Higher values allow more variation between frames."
+                      type: "number"
+                    "similar_image_filter_max_skip_frame":
+                      description: "Maximum number of consecutive frames that can be skipped by the similarity filter."
+                      type: "integer"
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                    "controlnets":
+                      description: "List of ControlNet configurations for guided generation. Each ControlNet provides different types of conditioning (pose, edges, depth, etc.). Dynamic updates limited to conditioning_scale changes only; cannot add new ControlNets or change model_id/preprocessor/params without reload."
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          "model_id":
+                            description: "⚠️ NOTE: ControlNet model_ids must be unique. Additionally, they must be compatible with the selected base model."
+                            type: "string"
+                            enum:
+                              - "thibaud/controlnet-sd21-openpose-diffusers"
+                              - "thibaud/controlnet-sd21-hed-diffusers"
+                              - "thibaud/controlnet-sd21-canny-diffusers"
+                              - "thibaud/controlnet-sd21-depth-diffusers"
+                              - "thibaud/controlnet-sd21-color-diffusers"
+                              - "lllyasviel/control_v11f1p_sd15_depth"
+                              - "lllyasviel/control_v11f1e_sd15_tile"
+                              - "lllyasviel/control_v11p_sd15_canny"
+                              - "xinsir/controlnet-depth-sdxl-1.0"
+                              - "xinsir/controlnet-canny-sdxl-1.0"
+                              - "xinsir/controlnet-tile-sdxl-1.0"
+                          "conditioning_scale":
+                            description: "Strength of the ControlNet's influence on generation. Higher values make the model follow the control signal more strictly. Typical range 0.0-1.0, where 0.0 disables the control and 1.0 applies full control. Default: 1.0"
+                            type: "number"
+                          "preprocessor":
+                            description: "Preprocessor to apply to input frames before feeding to the ControlNet. Common options include 'pose_tensorrt', 'soft_edge', 'canny', 'depth_tensorrt', 'passthrough'. If None, no preprocessing is applied.\n\n⚠️ NOTE: ControlNet preprocessor must be in the available list (AVAILABLE_PREPROCESSORS)."
+                            type: "string"
+                          "preprocessor_params":
+                            description: "Additional parameters for the preprocessor. For example, canny edge detection uses 'low_threshold' and 'high_threshold' values."
+                            type: "object"
+                            additionalProperties: {}
+                          "enabled":
+                            description: "Whether this ControlNet is active. Disabled ControlNets are not loaded. Default: true"
+                            type: "boolean"
+                          "control_guidance_start":
+                            description: "Fraction of the denoising process (0.0-1.0) when ControlNet guidance begins. 0.0 means guidance starts from the beginning."
+                            type: "number"
+                          "control_guidance_end":
+                            description: "Fraction of the denoising process (0.0-1.0) when ControlNet guidance ends. 1.0 means guidance continues until the end."
+                            type: "number"
+                        required:
+                          - "model_id"
+                          - "conditioning_scale"
+                          - "preprocessor"
+                          - "enabled"
+                    "ip_adapter":
+                      description: "IP adapter — Turns on IP-Adapter style conditioning and is fully hot-swappable. Available for SDXL, SDXL-faceid, SD1.5"
+                      type: "object"
+                      properties:
+                        "scale":
+                          type: "number"
+                        "enabled":
+                          type: "boolean"
+                        "type":
+                          description: "Type of IP adapter. Use 'faceid' for SDXL-faceid models, 'regular' for others"
+                          type: "string"
+                          enum:
+                            - "regular"
+                            - "faceid"
+                        "weight_type":
+                          description: "Weight interpolation method for IP adapter style conditioning. Controls how the style influence changes throughout the generation process."
+                          type: "string"
+                          enum:
+                            - "linear"
+                            - "ease in"
+                            - "ease out"
+                            - "ease in-out"
+                            - "reverse in-out"
+                            - "weak input"
+                            - "weak output"
+                            - "weak middle"
+                            - "strong middle"
+                            - "style transfer"
+                            - "composition"
+                            - "strong style transfer"
+                            - "style and composition"
+                            - "style transfer precise"
+                            - "composition precise"
+                      required:
+                        - "scale"
+                        - "enabled"
+                    "ip_adapter_style_image_url":
+                      description: "HTTPS URL of the style image to use. When set, the runtime downloads the image and configures the pipeline; if omitted, a default style image is used. For 'faceid' type, the image must contain a clear face. Available for SDXL, SDXL-faceid, SD1.5"
+                      type: "string"
+                "prompt":
+                  description: "Updated prompt to apply to the stream processing"
+                  type: "string"
+      parameters:
+        - schema:
+            type: "string"
+            minLength: 1
+          in: "path"
+          name: "id"
+          required: true
+          description: "ID of the stream to update"
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "id":
+                    description: "Unique identifier for the stream"
+                    type: "string"
+                  "stream_key":
+                    description: "Unique key used for streaming to this endpoint"
+                    type: "string"
+                  "output_stream_url":
+                    description: "URL where the processed stream output can be accessed"
+                    type: "string"
+                  "pipeline_params":
+                    description: "Current configuration parameters for the stream pipeline"
+                    type: "object"
+                    additionalProperties: {}
+                  "created_at":
+                    description: "ISO timestamp when the stream was created"
+                    type: "string"
+                  "pipeline_id":
+                    description: "ID of the processing pipeline being used"
+                    type: "string"
+                  "output_playback_id":
+                    description: "Playback ID for accessing the stream output"
+                    type: "string"
+                  "name":
+                    description: "Human-readable name of the stream"
+                    type: "string"
+                  "author":
+                    description: "ID of the user who created this stream"
+                    type: "string"
+                  "from_playground":
+                    description: "Whether this stream was created from the playground interface"
+                    type: "boolean"
+                  "gateway_host":
+                    description: "Gateway server hostname handling this stream"
+                    type: "string"
+                  "is_smoke_test":
+                    description: "Whether this is a smoke test stream"
+                    type: "boolean"
+                  "whip_url":
+                    description: "WebRTC WHIP URL for stream ingestion"
+                    type: "string"
+                required:
+                  - "id"
+                  - "stream_key"
+                  - "output_stream_url"
+                  - "pipeline_params"
+                  - "created_at"
+                  - "pipeline_id"
+                  - "output_playback_id"
+                  - "name"
+                  - "author"
+                  - "from_playground"
+                  - "gateway_host"
+                  - "is_smoke_test"
+                  - "whip_url"
+                additionalProperties: false
+        "400":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "404":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "500":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+    get:
+      operationId: "getStreamById"
+      summary: "Get stream by ID"
+      tags:
+        - "Streams"
+        - "public"
+      description: "Retrieves a specific stream by its ID. Users can only access their own streams unless they have admin privileges."
+      parameters:
+        - schema:
+            type: "string"
+            minLength: 1
+          in: "path"
+          name: "id"
+          required: true
+          description: "ID of the stream to retrieve"
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "id":
+                    description: "Unique identifier for the stream"
+                    type: "string"
+                  "stream_key":
+                    description: "Unique key used for streaming to this endpoint"
+                    type: "string"
+                  "output_stream_url":
+                    description: "URL where the processed stream output can be accessed"
+                    type: "string"
+                  "pipeline_params":
+                    description: "Current configuration parameters for the stream pipeline"
+                    type: "object"
+                    additionalProperties: {}
+                  "created_at":
+                    description: "ISO timestamp when the stream was created"
+                    type: "string"
+                  "pipeline_id":
+                    description: "ID of the processing pipeline being used"
+                    type: "string"
+                  "output_playback_id":
+                    description: "Playback ID for accessing the stream output"
+                    type: "string"
+                  "name":
+                    description: "Human-readable name of the stream"
+                    type: "string"
+                  "author":
+                    description: "ID of the user who created this stream"
+                    type: "string"
+                  "from_playground":
+                    description: "Whether this stream was created from the playground interface"
+                    type: "boolean"
+                  "gateway_host":
+                    description: "Gateway server hostname handling this stream"
+                    type: "string"
+                  "is_smoke_test":
+                    description: "Whether this is a smoke test stream"
+                    type: "boolean"
+                  "whip_url":
+                    description: "WebRTC WHIP URL for stream ingestion"
+                    type: "string"
+                required:
+                  - "id"
+                  - "stream_key"
+                  - "output_stream_url"
+                  - "pipeline_params"
+                  - "created_at"
+                  - "pipeline_id"
+                  - "output_playback_id"
+                  - "name"
+                  - "author"
+                  - "from_playground"
+                  - "gateway_host"
+                  - "is_smoke_test"
+                  - "whip_url"
+                additionalProperties: false
+        "400":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "404":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "500":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+  "/v1/streams/{id}/status":
+    get:
+      operationId: "getStreamStatus"
+      summary: "Get stream status"
+      tags:
+        - "Streams"
+        - "public"
+      description: "Gets the status of a specific stream"
+      parameters:
+        - schema:
+            type: "string"
+            minLength: 1
+          in: "path"
+          name: "id"
+          required: true
+          description: "ID of the stream to get status for"
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    type: "boolean"
+                  "error":
+                    nullable: true
+                  "data":
+                    anyOf:
+                      - type: "object"
+                        properties:
+                          "stream_id":
+                            description: "Stream identifier"
+                            type: "string"
+                          "request_id":
+                            description: "Gateway request identifier"
+                            type: "string"
+                          "pipeline_id":
+                            description: "Pipeline identifier"
+                            type: "string"
+                          "type":
+                            description: "Event type (e.g. 'status')"
+                            type: "string"
+                          "orchestrator_info":
+                            type: "object"
+                            properties:
+                              "address":
+                                type: "string"
+                              "url":
+                                type: "string"
+                                format: "uri"
+                            additionalProperties: {}
+                          "inference_status":
+                            type: "object"
+                            properties:
+                              "pipeline":
+                                type: "string"
+                              "start_time":
+                                description: "Unix seconds"
+                                type: "number"
+                              "last_params_update_time":
+                                description: "Unix seconds"
+                                type: "number"
+                              "last_params":
+                                description: "Model/pipeline parameters"
+                              "last_params_hash":
+                                type: "string"
+                              "input_fps":
+                                type: "number"
+                              "output_fps":
+                                type: "number"
+                              "last_input_time":
+                                description: "Unix seconds"
+                                type: "number"
+                              "last_output_time":
+                                description: "Unix seconds"
+                                type: "number"
+                              "restart_count":
+                                type: "integer"
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                              "last_restart_time":
+                                description: "Unix seconds"
+                                type: "number"
+                              "last_restart_logs":
+                                type: "array"
+                                items:
+                                  type: "string"
+                              "last_error":
+                                type: "string"
+                                nullable: true
+                              "stream_id":
+                                type: "string"
+                            additionalProperties: {}
+                          "gateway_status":
+                            type: "object"
+                            properties:
+                              "whep_url":
+                                type: "string"
+                                format: "uri"
+                              "error":
+                                type: "object"
+                                properties:
+                                  "error_message":
+                                    type: "string"
+                                  "error_time":
+                                    description: "Unix time in milliseconds"
+                                    type: "integer"
+                                    minimum: -9007199254740991
+                                    maximum: 9007199254740991
+                                required:
+                                  - "error_message"
+                                  - "error_time"
+                                additionalProperties: false
+                              "ingest_metrics":
+                                type: "object"
+                                properties:
+                                  "stats":
+                                    type: "object"
+                                    properties:
+                                      "peer_conn_stats":
+                                        type: "object"
+                                        properties:
+                                          "ID":
+                                            description: "Peer connection ID"
+                                            type: "string"
+                                          "BytesReceived":
+                                            description: "Total bytes received"
+                                            type: "integer"
+                                            minimum: -9007199254740991
+                                            maximum: 9007199254740991
+                                          "BytesSent":
+                                            description: "Total bytes sent"
+                                            type: "integer"
+                                            minimum: -9007199254740991
+                                            maximum: 9007199254740991
+                                        required:
+                                          - "ID"
+                                          - "BytesReceived"
+                                          - "BytesSent"
+                                        additionalProperties: {}
+                                      "track_stats":
+                                        type: "array"
+                                        items:
+                                          type: "object"
+                                          properties:
+                                            "type":
+                                              description: "RTP codec type, e.g. 'audio' or 'video'"
+                                              type: "string"
+                                            "jitter":
+                                              type: "number"
+                                            "packets_lost":
+                                              type: "integer"
+                                              minimum: -9007199254740991
+                                              maximum: 9007199254740991
+                                            "packets_received":
+                                              type: "integer"
+                                              minimum: -9007199254740991
+                                              maximum: 9007199254740991
+                                            "packet_loss_pct":
+                                              type: "number"
+                                            "rtt":
+                                              description: "Round trip time in nanoseconds"
+                                              type: "number"
+                                            "warnings":
+                                              type: "array"
+                                              items:
+                                                type: "string"
+                                          required:
+                                            - "type"
+                                            - "jitter"
+                                            - "packets_lost"
+                                            - "packets_received"
+                                            - "packet_loss_pct"
+                                            - "rtt"
+                                          additionalProperties: {}
+                                      "conn_quality":
+                                        description: "Connection quality assessment"
+                                        type: "string"
+                                        enum:
+                                          - "good"
+                                          - "bad"
+                                          - "unknown"
+                                    required:
+                                      - "peer_conn_stats"
+                                      - "conn_quality"
+                                    additionalProperties: {}
+                                required:
+                                  - "stats"
+                                additionalProperties: {}
+                            additionalProperties: {}
+                          "pipeline":
+                            description: "Model/pipeline name (if present)"
+                            type: "string"
+                        required:
+                          - "stream_id"
+                          - "request_id"
+                          - "pipeline_id"
+                        additionalProperties: {}
+                      - type: "object"
+                        properties:
+                          "state":
+                            type: "string"
+                            enum:
+                              - "OFFLINE"
+                          "info":
+                            type: "string"
+                        required:
+                          - "state"
+                        additionalProperties: false
+                      - type: "object"
+                        properties:
+                          "gateway_status":
+                            type: "object"
+                            properties:
+                              "whep_url":
+                                type: "string"
+                                format: "uri"
+                              "error":
+                                type: "object"
+                                properties:
+                                  "error_message":
+                                    type: "string"
+                                  "error_time":
+                                    description: "Unix time in milliseconds"
+                                    type: "integer"
+                                    minimum: -9007199254740991
+                                    maximum: 9007199254740991
+                                required:
+                                  - "error_message"
+                                  - "error_time"
+                                additionalProperties: false
+                              "ingest_metrics":
+                                type: "object"
+                                properties:
+                                  "stats":
+                                    type: "object"
+                                    properties:
+                                      "peer_conn_stats":
+                                        type: "object"
+                                        properties:
+                                          "ID":
+                                            description: "Peer connection ID"
+                                            type: "string"
+                                          "BytesReceived":
+                                            description: "Total bytes received"
+                                            type: "integer"
+                                            minimum: -9007199254740991
+                                            maximum: 9007199254740991
+                                          "BytesSent":
+                                            description: "Total bytes sent"
+                                            type: "integer"
+                                            minimum: -9007199254740991
+                                            maximum: 9007199254740991
+                                        required:
+                                          - "ID"
+                                          - "BytesReceived"
+                                          - "BytesSent"
+                                        additionalProperties: {}
+                                      "track_stats":
+                                        type: "array"
+                                        items:
+                                          type: "object"
+                                          properties:
+                                            "type":
+                                              description: "RTP codec type, e.g. 'audio' or 'video'"
+                                              type: "string"
+                                            "jitter":
+                                              type: "number"
+                                            "packets_lost":
+                                              type: "integer"
+                                              minimum: -9007199254740991
+                                              maximum: 9007199254740991
+                                            "packets_received":
+                                              type: "integer"
+                                              minimum: -9007199254740991
+                                              maximum: 9007199254740991
+                                            "packet_loss_pct":
+                                              type: "number"
+                                            "rtt":
+                                              description: "Round trip time in nanoseconds"
+                                              type: "number"
+                                            "warnings":
+                                              type: "array"
+                                              items:
+                                                type: "string"
+                                          required:
+                                            - "type"
+                                            - "jitter"
+                                            - "packets_lost"
+                                            - "packets_received"
+                                            - "packet_loss_pct"
+                                            - "rtt"
+                                          additionalProperties: {}
+                                      "conn_quality":
+                                        description: "Connection quality assessment"
+                                        type: "string"
+                                        enum:
+                                          - "good"
+                                          - "bad"
+                                          - "unknown"
+                                    required:
+                                      - "peer_conn_stats"
+                                      - "conn_quality"
+                                    additionalProperties: {}
+                                required:
+                                  - "stats"
+                                additionalProperties: {}
+                            additionalProperties: {}
+                        required:
+                          - "gateway_status"
+                        additionalProperties: {}
+                required:
+                  - "success"
+                additionalProperties: false
+        "400":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "404":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+        "500":
+          description: "Default Response"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  "success":
+                    description: "Always false for error responses"
+                    type: "boolean"
+                  "error":
+                    description: "Human-readable error message describing what went wrong"
+                    type: "string"
+                required:
+                  - "success"
+                  - "error"
+                additionalProperties: false
+servers:
+  - url: "https://api.daydream.live"
+    description: "Daydream API"
+tags:
+  - name: "Streams"
+  - name: "public"
