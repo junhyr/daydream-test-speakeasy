@@ -1,19 +1,22 @@
 workflowVersion: 1.0.0
 speakeasyVersion: latest
 sources:
-  Daydream API Documentation:
-    inputs:
-      - location: openapi/openapi.public.json
-    output: .speakeasy/out.openapi.yaml
-    registry:
-      location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation
+    Daydream API Documentation:
+        inputs:
+            - location: openapi/openapi.public.json
+        output: .speakeasy/out.openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation
 targets:
-  daydream-test:
-    target: typescript
-    source: Daydream API Documentation
-    codeSamples:
-      registry:
-        location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation-typescript-code-samples
-      labelOverride:
-        fixedValue: Typescript (SDK)
-      blocking: false
+    daydream-test:
+        target: typescript
+        source: Daydream API Documentation
+        publish:
+            npm:
+                token: $npm_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false
