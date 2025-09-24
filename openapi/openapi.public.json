@@ -1749,6 +1749,93 @@
           }
         }
       }
+    },
+    "/v1/streams/test": {
+      "post": {
+        "operationId": "testStream",
+        "summary": "Test example route",
+        "tags": ["Streams", "public"],
+        "description": "Example endpoint demonstrating a discriminated union request body",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["x"]
+                      },
+                      "xSpecificFieldA": {
+                        "type": "number"
+                      },
+                      "xSpecificFieldB": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["type", "xSpecificFieldA", "xSpecificFieldB"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["y"]
+                      },
+                      "ySpecificFieldA": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["type", "ySpecificFieldA"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["z"]
+                      },
+                      "zSpecificFieldA": {
+                        "type": "number"
+                      },
+                      "zSpecificFieldB": {
+                        "type": "string"
+                      },
+                      "zSpecificFieldC": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "zSpecificFieldA",
+                      "zSpecificFieldB",
+                      "zSpecificFieldC"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": ["okay"]
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [
