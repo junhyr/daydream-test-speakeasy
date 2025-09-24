@@ -1,17 +1,18 @@
 lockVersion: 2.0.0
 id: 4cd81233-abf6-4f87-ab23-5158bc699720
 management:
-  docChecksum: e5f844e629697b8b621eaa1be84ea19c
+  docChecksum: fa938e884db21a9008fc0925d5ce9219
   docVersion: 1.0.0
-  speakeasyVersion: 1.622.1
-  generationVersion: 2.709.0
-  releaseVersion: 0.0.3
-  configChecksum: e7b5672576c7ab015231fb9d34663a0f
+  speakeasyVersion: 1.624.0
+  generationVersion: 2.714.0
+  releaseVersion: 0.0.4
+  configChecksum: 30dcc55931e3ea78527984f96d5b4ecd
+  published: true
 features:
   typescript:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.1
-    core: 3.21.23
+    core: 3.21.25
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.1
     enumUnions: 0.1.0
@@ -88,6 +89,7 @@ generatedFiles:
   - docs/models/operations/inferencestatus.md
   - docs/models/operations/ingestmetrics1.md
   - docs/models/operations/ingestmetrics2.md
+  - docs/models/operations/okay.md
   - docs/models/operations/orchestratorinfo.md
   - docs/models/operations/params.md
   - docs/models/operations/peerconnstats1.md
@@ -98,8 +100,12 @@ generatedFiles:
   - docs/models/operations/state.md
   - docs/models/operations/stats1.md
   - docs/models/operations/stats2.md
+  - docs/models/operations/teststreamrequest.md
   - docs/models/operations/trackstat1.md
   - docs/models/operations/trackstat2.md
+  - docs/models/operations/typex.md
+  - docs/models/operations/typey.md
+  - docs/models/operations/typez.md
   - docs/models/operations/updatestreamcontrolnet.md
   - docs/models/operations/updatestreamcontrolnetmodelid.md
   - docs/models/operations/updatestreamipadapter.md
@@ -116,6 +122,9 @@ generatedFiles:
   - docs/models/operations/updatestreamseedinterpolationmethod.md
   - docs/models/operations/updatestreamtype.md
   - docs/models/operations/updatestreamweighttype.md
+  - docs/models/operations/x.md
+  - docs/models/operations/y.md
+  - docs/models/operations/z.md
   - docs/models/security.md
   - docs/sdks/daydreamtest/README.md
   - docs/sdks/public/README.md
@@ -133,6 +142,7 @@ generatedFiles:
   - src/funcs/streamsGetAllStreams.ts
   - src/funcs/streamsGetStreamById.ts
   - src/funcs/streamsGetStreamStatus.ts
+  - src/funcs/streamsTestStream.ts
   - src/funcs/streamsUpdateStream.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
@@ -173,6 +183,7 @@ generatedFiles:
   - src/models/operations/getstreambyid.ts
   - src/models/operations/getstreamstatus.ts
   - src/models/operations/index.ts
+  - src/models/operations/teststream.ts
   - src/models/operations/updatestream.ts
   - src/models/security.ts
   - src/sdk/index.ts
@@ -262,4 +273,9 @@ examples:
           application/json: {"success": true, "error": "<value>"}
         "500":
           application/json: {"success": true, "error": "<value>"}
+  testStream:
+    speakeasy-default-test-stream:
+      responses:
+        "200":
+          application/json: "okay"
 examplesVersion: 1.0.2

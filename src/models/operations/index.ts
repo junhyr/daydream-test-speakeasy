@@ -7,4 +7,5 @@ export * from "./deletestream.js";
 export * from "./getallstreams.js";
 export * from "./getstreambyid.js";
 export * from "./getstreamstatus.js";
+export * from "./teststream.js";
 export * from "./updatestream.js";

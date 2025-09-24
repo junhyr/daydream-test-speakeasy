@@ -1,9 +1,9 @@
-speakeasyVersion: 1.622.1
+speakeasyVersion: 1.624.0
 sources:
     Daydream API Documentation:
         sourceNamespace: daydream-api-documentation
-        sourceRevisionDigest: sha256:0764a75118a136347cdb7d26fa72b4b3526ceb760ec91d107c711659a0c76714
-        sourceBlobDigest: sha256:20f6ed4390a734dc8906f2b7c04270fe71810861385827c7da814db53f9b2225
+        sourceRevisionDigest: sha256:0fee6a3c6a503d75987497abf47b7049cdeaef050a8a05f8288e545594197df6
+        sourceBlobDigest: sha256:98473bc0890fef73b702f57cf9d6f45c03b1ad25e60985d922fb9a7ed74d76a2
         tags:
             - latest
             - 1.0.0
@@ -11,10 +11,10 @@ targets:
     daydream-test:
         source: Daydream API Documentation
         sourceNamespace: daydream-api-documentation
-        sourceRevisionDigest: sha256:0764a75118a136347cdb7d26fa72b4b3526ceb760ec91d107c711659a0c76714
-        sourceBlobDigest: sha256:20f6ed4390a734dc8906f2b7c04270fe71810861385827c7da814db53f9b2225
+        sourceRevisionDigest: sha256:0fee6a3c6a503d75987497abf47b7049cdeaef050a8a05f8288e545594197df6
+        sourceBlobDigest: sha256:98473bc0890fef73b702f57cf9d6f45c03b1ad25e60985d922fb9a7ed74d76a2
         codeSamplesNamespace: daydream-api-documentation-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:18837e749aad4ead17656a135cacba191ea3411951c6561ce4320fc6fc984f9f
+        codeSamplesRevisionDigest: sha256:cc4a6e3d01ac4bf61e1cfc5297caf152b2588a0f4b9709cb0d1c8b4ddcc71dde
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -29,6 +29,9 @@ workflow:
         daydream-test:
             target: typescript
             source: Daydream API Documentation
+            publish:
+                npm:
+                    token: $npm_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/livepeer-jw/livepeer/daydream-api-documentation-typescript-code-samples

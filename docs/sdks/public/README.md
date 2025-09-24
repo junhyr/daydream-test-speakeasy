@@ -11,6 +11,7 @@
 * [updateStream](#updatestream) - Update a stream
 * [getStreamById](#getstreambyid) - Get stream by ID
 * [getStreamStatus](#getstreamstatus) - Get stream status
+* [testStream](#teststream) - Test example route
 
 ## createStream
 
@@ -456,3 +457,72 @@ run();
 | errors.GetStreamStatusNotFoundError       | 404                                       | application/json                          |
 | errors.GetStreamStatusInternalServerError | 500                                       | application/json                          |
 | errors.DaydreamTestDefaultError           | 4XX, 5XX                                  | \*/\*                                     |
+
+## testStream
+
+Example endpoint demonstrating a discriminated union request body
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="testStream" method="post" path="/v1/streams/test" -->
+```typescript
+import { DaydreamTest } from "daydream-test";
+
+const daydreamTest = new DaydreamTest({
+  bearer: process.env["DAYDREAMTEST_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await daydreamTest.public.testStream();
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { DaydreamTestCore } from "daydream-test/core.js";
+import { streamsTestStream } from "daydream-test/funcs/streamsTestStream.js";
+
+// Use `DaydreamTestCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const daydreamTest = new DaydreamTestCore({
+  bearer: process.env["DAYDREAMTEST_BEARER"] ?? "",
+});
+
+async function run() {
+  const res = await streamsTestStream(daydreamTest);
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("streamsTestStream failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.TestStreamRequest](../../models/operations/teststreamrequest.md)                                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.Okay](../../models/operations/okay.md)\>**
+
+### Errors
+
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| errors.DaydreamTestDefaultError | 4XX, 5XX                        | \*/\*                           |

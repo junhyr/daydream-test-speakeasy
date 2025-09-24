@@ -7,6 +7,7 @@ import { streamsDeleteStream } from "../funcs/streamsDeleteStream.js";
 import { streamsGetAllStreams } from "../funcs/streamsGetAllStreams.js";
 import { streamsGetStreamById } from "../funcs/streamsGetStreamById.js";
 import { streamsGetStreamStatus } from "../funcs/streamsGetStreamStatus.js";
+import { streamsTestStream } from "../funcs/streamsTestStream.js";
 import { streamsUpdateStream } from "../funcs/streamsUpdateStream.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -109,6 +110,23 @@ export class Public extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetStreamStatusResponse> {
     return unwrapAsync(streamsGetStreamStatus(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Test example route
+   *
+   * @remarks
+   * Example endpoint demonstrating a discriminated union request body
+   */
+  async testStream(
+    request?: operations.TestStreamRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<operations.Okay> {
+    return unwrapAsync(streamsTestStream(
       this,
       request,
       options,

@@ -44,37 +44,30 @@ Daydream API Documentation: API documentation for Daydream API
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
 ### NPM
 
 ```bash
-npm add <UNSET>
+npm add daydream-test
 ```
 
 ### PNPM
 
 ```bash
-pnpm add <UNSET>
+pnpm add daydream-test
 ```
 
 ### Bun
 
 ```bash
-bun add <UNSET>
+bun add daydream-test
 ```
 
 ### Yarn
 
 ```bash
-yarn add <UNSET> zod
-
-# Note that Yarn does not install peer dependencies automatically. You will need
-# to install zod as shown above.
+yarn add daydream-test
 ```
 
 > [!NOTE]
@@ -155,6 +148,7 @@ run();
 * [updateStream](docs/sdks/public/README.md#updatestream) - Update a stream
 * [getStreamById](docs/sdks/public/README.md#getstreambyid) - Get stream by ID
 * [getStreamStatus](docs/sdks/public/README.md#getstreamstatus) - Get stream status
+* [testStream](docs/sdks/public/README.md#teststream) - Test example route
 
 ### [streams](docs/sdks/streams/README.md)
 
@@ -164,6 +158,7 @@ run();
 * [updateStream](docs/sdks/streams/README.md#updatestream) - Update a stream
 * [getStreamById](docs/sdks/streams/README.md#getstreambyid) - Get stream by ID
 * [getStreamStatus](docs/sdks/streams/README.md#getstreamstatus) - Get stream status
+* [testStream](docs/sdks/streams/README.md#teststream) - Test example route
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -193,6 +188,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`streamsGetStreamById`](docs/sdks/streams/README.md#getstreambyid) - Get stream by ID
 - [`streamsGetStreamStatus`](docs/sdks/public/README.md#getstreamstatus) - Get stream status
 - [`streamsGetStreamStatus`](docs/sdks/streams/README.md#getstreamstatus) - Get stream status
+- [`streamsTestStream`](docs/sdks/public/README.md#teststream) - Test example route
+- [`streamsTestStream`](docs/sdks/streams/README.md#teststream) - Test example route
 - [`streamsUpdateStream`](docs/sdks/public/README.md#updatestream) - Update a stream
 - [`streamsUpdateStream`](docs/sdks/streams/README.md#updatestream) - Update a stream
 
@@ -328,21 +325,21 @@ run();
 
 
 **Inherit from [`DaydreamTestError`](./src/models/errors/daydreamtesterror.ts)**:
-* [`CreateStreamBadRequestError`](./src/models/errors/createstreambadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 12 methods.*
-* [`GetAllStreamsBadRequestError`](./src/models/errors/getallstreamsbadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 12 methods.*
-* [`UpdateStreamBadRequestError`](./src/models/errors/updatestreambadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 12 methods.*
-* [`GetStreamByIdBadRequestError`](./src/models/errors/getstreambyidbadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 12 methods.*
-* [`GetStreamStatusBadRequestError`](./src/models/errors/getstreamstatusbadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 12 methods.*
-* [`DeleteStreamNotFoundError`](./src/models/errors/deletestreamnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 12 methods.*
-* [`UpdateStreamNotFoundError`](./src/models/errors/updatestreamnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 12 methods.*
-* [`GetStreamByIdNotFoundError`](./src/models/errors/getstreambyidnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 12 methods.*
-* [`GetStreamStatusNotFoundError`](./src/models/errors/getstreamstatusnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 12 methods.*
-* [`CreateStreamInternalServerError`](./src/models/errors/createstreaminternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 12 methods.*
-* [`GetAllStreamsInternalServerError`](./src/models/errors/getallstreamsinternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 12 methods.*
-* [`DeleteStreamInternalServerError`](./src/models/errors/deletestreaminternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 12 methods.*
-* [`UpdateStreamInternalServerError`](./src/models/errors/updatestreaminternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 12 methods.*
-* [`GetStreamByIdInternalServerError`](./src/models/errors/getstreambyidinternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 12 methods.*
-* [`GetStreamStatusInternalServerError`](./src/models/errors/getstreamstatusinternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 12 methods.*
+* [`CreateStreamBadRequestError`](./src/models/errors/createstreambadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 14 methods.*
+* [`GetAllStreamsBadRequestError`](./src/models/errors/getallstreamsbadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 14 methods.*
+* [`UpdateStreamBadRequestError`](./src/models/errors/updatestreambadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 14 methods.*
+* [`GetStreamByIdBadRequestError`](./src/models/errors/getstreambyidbadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 14 methods.*
+* [`GetStreamStatusBadRequestError`](./src/models/errors/getstreamstatusbadrequesterror.ts): Default Response. Status code `400`. Applicable to 1 of 14 methods.*
+* [`DeleteStreamNotFoundError`](./src/models/errors/deletestreamnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 14 methods.*
+* [`UpdateStreamNotFoundError`](./src/models/errors/updatestreamnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 14 methods.*
+* [`GetStreamByIdNotFoundError`](./src/models/errors/getstreambyidnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 14 methods.*
+* [`GetStreamStatusNotFoundError`](./src/models/errors/getstreamstatusnotfounderror.ts): Default Response. Status code `404`. Applicable to 1 of 14 methods.*
+* [`CreateStreamInternalServerError`](./src/models/errors/createstreaminternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 14 methods.*
+* [`GetAllStreamsInternalServerError`](./src/models/errors/getallstreamsinternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 14 methods.*
+* [`DeleteStreamInternalServerError`](./src/models/errors/deletestreaminternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 14 methods.*
+* [`UpdateStreamInternalServerError`](./src/models/errors/updatestreaminternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 14 methods.*
+* [`GetStreamByIdInternalServerError`](./src/models/errors/getstreambyidinternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 14 methods.*
+* [`GetStreamStatusInternalServerError`](./src/models/errors/getstreamstatusinternalservererror.ts): Default Response. Status code `500`. Applicable to 1 of 14 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
