@@ -3,10 +3,12 @@ id: 4cd81233-abf6-4f87-ab23-5158bc699720
 management:
   docChecksum: fa938e884db21a9008fc0925d5ce9219
   docVersion: 1.0.0
-  speakeasyVersion: 1.624.0
-  generationVersion: 2.714.0
-  releaseVersion: 0.0.4
-  configChecksum: 30dcc55931e3ea78527984f96d5b4ecd
+  speakeasyVersion: 1.631.0
+  generationVersion: 2.716.10
+  releaseVersion: 0.0.5
+  configChecksum: 137657748273b56dce405a3def88e181
+  repoURL: https://github.com/junhyr/daydream-test-speakeasy.git
+  installationURL: https://github.com/junhyr/daydream-test-speakeasy
   published: true
 features:
   typescript:
@@ -26,7 +28,7 @@ features:
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
-    unions: 2.85.11
+    unions: 2.85.12
 generatedFiles:
   - .devcontainer/README.md
   - .devcontainer/devcontainer.json
