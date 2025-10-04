@@ -1,6 +1,6 @@
 {
   "name": "daydream-test",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "author": "Speakeasy",
   "type": "module",
   "tshy": {
@@ -19,6 +19,10 @@
     }
   },
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/junhyr/daydream-test-speakeasy.git"
+  },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tshy",
