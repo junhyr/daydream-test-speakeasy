@@ -139,7 +139,6 @@ run();
 <details open>
 <summary>Available methods</summary>
 
-
 ### [public](docs/sdks/public/README.md)
 
 * [createStream](docs/sdks/public/README.md#createstream) - Create a new stream
