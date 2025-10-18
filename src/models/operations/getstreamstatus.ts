@@ -40,7 +40,7 @@ export type PeerConnStats2 = {
    * Total bytes sent
    */
   bytesSent: number;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type TrackStat2 = {
@@ -57,7 +57,7 @@ export type TrackStat2 = {
    */
   rtt: number;
   warnings?: Array<string> | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /**
@@ -80,24 +80,24 @@ export type Stats2 = {
    * Connection quality assessment
    */
   connQuality: ConnQuality2;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type IngestMetrics2 = {
   stats: Stats2;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type GatewayStatus2 = {
   whepUrl?: string | undefined;
   error?: Error2 | undefined;
   ingestMetrics?: IngestMetrics2 | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type GetStreamStatusData2 = {
   gatewayStatus: GatewayStatus2;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export const State = {
@@ -113,7 +113,7 @@ export type DataOffline = {
 export type OrchestratorInfo = {
   address?: string | undefined;
   url?: string | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type InferenceStatus = {
@@ -149,7 +149,7 @@ export type InferenceStatus = {
   lastRestartLogs?: Array<string> | undefined;
   lastError?: string | null | undefined;
   streamId?: string | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type Error1 = {
@@ -173,7 +173,7 @@ export type PeerConnStats1 = {
    * Total bytes sent
    */
   bytesSent: number;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type TrackStat1 = {
@@ -190,7 +190,7 @@ export type TrackStat1 = {
    */
   rtt: number;
   warnings?: Array<string> | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /**
@@ -213,19 +213,19 @@ export type Stats1 = {
    * Connection quality assessment
    */
   connQuality: ConnQuality1;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type IngestMetrics1 = {
   stats: Stats1;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type GatewayStatus1 = {
   whepUrl?: string | undefined;
   error?: Error1 | undefined;
   ingestMetrics?: IngestMetrics1 | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type GetStreamStatusData1 = {
@@ -252,7 +252,7 @@ export type GetStreamStatusData1 = {
    * Model/pipeline name (if present)
    */
   pipeline?: string | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 export type Data = GetStreamStatusData1 | DataOffline | GetStreamStatusData2;
@@ -418,7 +418,7 @@ export const PeerConnStats2$outboundSchema: z.ZodType<
   id: z.string(),
   bytesReceived: z.number().int(),
   bytesSent: z.number().int(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -508,7 +508,7 @@ export const TrackStat2$outboundSchema: z.ZodType<
   packetLossPct: z.number(),
   rtt: z.number(),
   warnings: z.array(z.string()).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -602,7 +602,7 @@ export const Stats2$outboundSchema: z.ZodType<
   peerConnStats: z.lazy(() => PeerConnStats2$outboundSchema),
   trackStats: z.array(z.lazy(() => TrackStat2$outboundSchema)).optional(),
   connQuality: ConnQuality2$outboundSchema,
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -668,7 +668,7 @@ export const IngestMetrics2$outboundSchema: z.ZodType<
   IngestMetrics2
 > = z.object({
   stats: z.lazy(() => Stats2$outboundSchema),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -742,7 +742,7 @@ export const GatewayStatus2$outboundSchema: z.ZodType<
   whepUrl: z.string().optional(),
   error: z.lazy(() => Error2$outboundSchema).optional(),
   ingestMetrics: z.lazy(() => IngestMetrics2$outboundSchema).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -811,7 +811,7 @@ export const GetStreamStatusData2$outboundSchema: z.ZodType<
   GetStreamStatusData2
 > = z.object({
   gatewayStatus: z.lazy(() => GatewayStatus2$outboundSchema),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -955,7 +955,7 @@ export const OrchestratorInfo$outboundSchema: z.ZodType<
 > = z.object({
   address: z.string().optional(),
   url: z.string().optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1077,7 +1077,7 @@ export const InferenceStatus$outboundSchema: z.ZodType<
   lastRestartLogs: z.array(z.string()).optional(),
   lastError: z.nullable(z.string()).optional(),
   streamId: z.string().optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1227,7 +1227,7 @@ export const PeerConnStats1$outboundSchema: z.ZodType<
   id: z.string(),
   bytesReceived: z.number().int(),
   bytesSent: z.number().int(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1317,7 +1317,7 @@ export const TrackStat1$outboundSchema: z.ZodType<
   packetLossPct: z.number(),
   rtt: z.number(),
   warnings: z.array(z.string()).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1411,7 +1411,7 @@ export const Stats1$outboundSchema: z.ZodType<
   peerConnStats: z.lazy(() => PeerConnStats1$outboundSchema),
   trackStats: z.array(z.lazy(() => TrackStat1$outboundSchema)).optional(),
   connQuality: ConnQuality1$outboundSchema,
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1477,7 +1477,7 @@ export const IngestMetrics1$outboundSchema: z.ZodType<
   IngestMetrics1
 > = z.object({
   stats: z.lazy(() => Stats1$outboundSchema),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1551,7 +1551,7 @@ export const GatewayStatus1$outboundSchema: z.ZodType<
   whepUrl: z.string().optional(),
   error: z.lazy(() => Error1$outboundSchema).optional(),
   ingestMetrics: z.lazy(() => IngestMetrics1$outboundSchema).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
@@ -1646,7 +1646,7 @@ export const GetStreamStatusData1$outboundSchema: z.ZodType<
   inferenceStatus: z.lazy(() => InferenceStatus$outboundSchema).optional(),
   gatewayStatus: z.lazy(() => GatewayStatus1$outboundSchema).optional(),
   pipeline: z.string().optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
