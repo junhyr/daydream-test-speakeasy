@@ -1,9 +1,9 @@
-speakeasyVersion: 1.624.0
+speakeasyVersion: 1.788.1
 sources:
     Daydream API Documentation:
         sourceNamespace: daydream-api-documentation
-        sourceRevisionDigest: sha256:0fee6a3c6a503d75987497abf47b7049cdeaef050a8a05f8288e545594197df6
-        sourceBlobDigest: sha256:98473bc0890fef73b702f57cf9d6f45c03b1ad25e60985d922fb9a7ed74d76a2
+        sourceRevisionDigest: sha256:2e0d35d529a639771306813c9ceaaadd0410448270a312e898a7eb441a1dda3e
+        sourceBlobDigest: sha256:c5d6bf58d8d3045c0aa377f8c84f7fdd5013a8fc2ccf48135b2fe6efb93ec0c8
         tags:
             - latest
             - 1.0.0
@@ -11,10 +11,10 @@ targets:
     daydream-test:
         source: Daydream API Documentation
         sourceNamespace: daydream-api-documentation
-        sourceRevisionDigest: sha256:0fee6a3c6a503d75987497abf47b7049cdeaef050a8a05f8288e545594197df6
-        sourceBlobDigest: sha256:98473bc0890fef73b702f57cf9d6f45c03b1ad25e60985d922fb9a7ed74d76a2
+        sourceRevisionDigest: sha256:2e0d35d529a639771306813c9ceaaadd0410448270a312e898a7eb441a1dda3e
+        sourceBlobDigest: sha256:c5d6bf58d8d3045c0aa377f8c84f7fdd5013a8fc2ccf48135b2fe6efb93ec0c8
         codeSamplesNamespace: daydream-api-documentation-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:cc4a6e3d01ac4bf61e1cfc5297caf152b2588a0f4b9709cb0d1c8b4ddcc71dde
+        codeSamplesRevisionDigest: sha256:5a18c1ce0bee59fa114b72513af23d46d521fb44339c1bd3ac7d054b9cbab4a8
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

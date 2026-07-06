@@ -15,9 +15,9 @@ let value: Z = {
 
 ## Fields
 
-| Field                                                | Type                                                 | Required                                             | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `type`                                               | [operations.TypeZ](../../models/operations/typez.md) | :heavy_check_mark:                                   | N/A                                                  |
-| `zSpecificFieldA`                                    | *number*                                             | :heavy_check_mark:                                   | N/A                                                  |
-| `zSpecificFieldB`                                    | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
-| `zSpecificFieldC`                                    | *number*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"z"*              | :heavy_check_mark: | N/A                |
+| `zSpecificFieldA`  | *number*           | :heavy_check_mark: | N/A                |
+| `zSpecificFieldB`  | *string*           | :heavy_check_mark: | N/A                |
+| `zSpecificFieldC`  | *number*           | :heavy_check_mark: | N/A                |

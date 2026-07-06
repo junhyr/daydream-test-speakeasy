@@ -1,5 +1,4 @@
 # Public
-(*public*)
 
 ## Overview
 

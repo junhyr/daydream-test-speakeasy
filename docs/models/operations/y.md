@@ -13,7 +13,7 @@ let value: Y = {
 
 ## Fields
 
-| Field                                                | Type                                                 | Required                                             | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `type`                                               | [operations.TypeY](../../models/operations/typey.md) | :heavy_check_mark:                                   | N/A                                                  |
-| `ySpecificFieldA`                                    | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"y"*              | :heavy_check_mark: | N/A                |
+| `ySpecificFieldA`  | *string*           | :heavy_check_mark: | N/A                |

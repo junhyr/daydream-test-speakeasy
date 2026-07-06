@@ -14,8 +14,8 @@ let value: X = {
 
 ## Fields
 
-| Field                                                | Type                                                 | Required                                             | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `type`                                               | [operations.TypeX](../../models/operations/typex.md) | :heavy_check_mark:                                   | N/A                                                  |
-| `xSpecificFieldA`                                    | *number*                                             | :heavy_check_mark:                                   | N/A                                                  |
-| `xSpecificFieldB`                                    | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"x"*              | :heavy_check_mark: | N/A                |
+| `xSpecificFieldA`  | *number*           | :heavy_check_mark: | N/A                |
+| `xSpecificFieldB`  | *string*           | :heavy_check_mark: | N/A                |
